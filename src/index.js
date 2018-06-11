@@ -11,15 +11,15 @@ const createProvider = (Provider, initialState, actions) =>
     render() {
       return (
         <Provider value={{ state: this.state, actions: this.actions }}>
-          {this.props.children}
+          {this.props.children} {/* eslint-disable-line */}
         </Provider>
       )
     }
   }
 
-const identity = () => ({})
+const empty = () => ({})
 const createConnect = Consumer =>
-  (mapStateToProps = identity, mapActionsToProps = identity) =>
+  (mapStateToProps = empty, mapActionsToProps = empty) =>
     BaseComponent => props => (
       <Consumer>
         {
@@ -28,11 +28,19 @@ const createConnect = Consumer =>
         }
       </Consumer>
     )
+
+const creatConsumer = Consumer => props =>
+  (
+    <Consumer>
+      {({ state, actions }) => props.children(state, actions) }
+    </Consumer>
+  )
+
 const createStore = (state, actions) => {
   const context = createContext()
   const Provider = createProvider(context.Provider, state, actions)
-  const Consumer = context.Consumer // eslint-disable-line
-  const connect = createConnect(Consumer)
+  const Consumer = creatConsumer(context.Consumer)
+  const connect = createConnect(context.Consumer)
 
   return {
     Provider,

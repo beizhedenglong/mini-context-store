@@ -35,8 +35,9 @@ const Todo =  TodoStore.connect(
     onAdd: actions.addTodo
   })
 )(
-  ({text, onTextChange, onAdd, todos}) => {
+  ({text, onTextChange, onAdd, todos, test}) => {
     return <div>
+      {test}
       <input type="text" text={text} onChange={onTextChange}/>
       <button onClick={onAdd}>add</button>
       <ol>
@@ -54,7 +55,13 @@ class App extends React.Component {
     return (
     <div>
       <TodoStore.Provider>
-        <Todo></Todo>
+        <Todo test="ok"></Todo>
+        -------------------------------
+        <TodoStore.Consumer>
+          {
+            ({text}, actions) => <div>{text}</div>
+          }
+        </TodoStore.Consumer>
       </TodoStore.Provider>
     </div> 
     )
