@@ -4,8 +4,16 @@ const createProvider = (Provider, initialState, actions) =>
   class EnchancedProvider extends React.Component {
     state = initialState || {}
     actions = Object.keys(actions).reduce((fns, fnName) => {
-      fns[fnName] = (...args) => // eslint-disable-line
-        this.setState(state => actions[fnName](...args)(state))
+      fns[fnName] = (...args) => { // eslint-disable-line
+        const outerResult = actions[fnName](...args)
+        const innerResult = outerResult(this.state)
+
+        if (innerResult.then) {
+          innerResult.then(res => this.setState(res))
+        } else {
+          this.setState(state => outerResult(state))
+        }
+      }
       return fns
     }, {})
     render() {
