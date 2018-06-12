@@ -1,6 +1,8 @@
 import React, { createContext } from 'react'
+import PropTypes from 'prop-types'
+import { getDisplayName } from './utils'
 
-const createProvider = (Provider, initialState, actions) =>
+const createProvider = (Provider, initialState, actions) => {
   class EnchancedProvider extends React.Component {
     state = initialState || {}
     actions = Object.keys(actions).reduce((fns, fnName) => {
@@ -18,31 +20,47 @@ const createProvider = (Provider, initialState, actions) =>
     }, {})
     render() {
       return (
-        <Provider value={{ state: this.state, actions: this.actions }}>
-          {this.props.children} {/* eslint-disable-line */}
-        </Provider>
+        <Provider
+          value={{ state: this.state, actions: this.actions }}
+          {...this.props}
+        />
       )
     }
   }
+  return EnchancedProvider
+}
+
 
 const empty = () => ({})
 const createConnect = Consumer =>
   (mapStateToProps = empty, mapActionsToProps = empty) =>
-    BaseComponent => props => (
+    (BaseComponent) => {
+      const Connect = props => (
+        <Consumer>
+          {
+          ({ state, actions }) =>
+            <BaseComponent {...props} {...mapStateToProps(state)} {...mapActionsToProps(actions)} />
+          }
+        </Consumer>
+      )
+      Connect.displayName = `connect(${getDisplayName(BaseComponent)})`
+      return Connect
+    }
+
+const creatConsumer = (Consumer) => {
+  const EnchancedConsumer = props =>
+    (
       <Consumer>
-        {
-        ({ state, actions }) =>
-          <BaseComponent {...props} {...mapStateToProps(state)} {...mapActionsToProps(actions)} />
-        }
+        {({ state, actions }) => props.children(state, actions) }
       </Consumer>
     )
 
-const creatConsumer = Consumer => props =>
-  (
-    <Consumer>
-      {({ state, actions }) => props.children(state, actions) }
-    </Consumer>
-  )
+  EnchancedConsumer.propTypes = {
+    children: PropTypes.func.isRequired,
+  }
+  EnchancedConsumer.displayName = 'EnchancedConsumer'
+  return EnchancedConsumer
+}
 
 const createStore = (state, actions) => {
   const context = createContext()
