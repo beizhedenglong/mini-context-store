@@ -23,6 +23,11 @@
     "state-management",
     "react-store"
   ],
+  "peerDependencies": {
+      "prop-types": "15.x.x",
+      "react": ">= 16.3.1",
+      "react-dom": ">= 16.3.1"
+  },
   "devDependencies": {
     "babel-eslint": "^8.2.2",
     "babel-plugin-transform-class-properties": "^6.24.1",
