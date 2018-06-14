@@ -1,5 +1,6 @@
 # Mini Context Store
-
+A react state management library using new context api. <br />
+中文介绍，点击[这里](https://github.com/beizhedenglong/mini-context-store/blob/master/README-CN.md)
 ## Installation
 `npm i mini-context-store --save`
 
@@ -56,7 +57,7 @@ A react component subscribes state changes.
 ```js
   const EnchancedComponent = connect(mapStateToProps, mapStateToProps)(BaseComponent)
 ```
-connect is a high-order component receives two map functions and a BaseComponent, then  return a EnchancedComponent that subscribes state changes. <br />
+connect is function  receives two map functions and return  a high-order component. The  high-order component receives a BaseComponent, then  return a EnchancedComponent that subscribes state changes. <br />
 mapStateToProps and mapStateToProps are two pure functions. mapStateToProps receives state and return an object that will be merged in EnchancedComponent' props. mapStateToProps receives actions and and return an object that will be merged in EnchancedComponent' props.
 
 
