@@ -57,7 +57,7 @@ A react component subscribes state changes.
 ```js
   const EnchancedComponent = connect(mapStateToProps, mapStateToProps)(BaseComponent)
 ```
-connect is function  receives two map functions and return  a high-order component. The  high-order component receives a BaseComponent, then  return a EnchancedComponent that subscribes state changes. <br />
+connect is a function  receives two map functions and return  a high-order component. The  high-order component receives a BaseComponent, then  return a EnchancedComponent that subscribes state changes. <br />
 mapStateToProps and mapStateToProps are two pure functions. mapStateToProps receives state and return an object that will be merged in EnchancedComponent' props. mapStateToProps receives actions and and return an object that will be merged in EnchancedComponent' props.
 
 

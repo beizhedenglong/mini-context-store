@@ -41,7 +41,7 @@
     {/* children */}
   <Provider/>
 ```
-Provider 允许 Consumers 以 connect 返回的组件订阅 state 的改变。 <br />
+Provider 允许 Consumers 或 connect 修饰过的组件订阅 state 的改变。 <br />
 *注意*: 不用再给 creteStore 返回的 Provider 传递 `value` 了。
 
 ### Consumer
