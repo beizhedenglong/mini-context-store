@@ -1,6 +1,6 @@
 {
   "name": "mini-context-store",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "main": "lib/index.js",
   "repository": {
     "type": "git",
@@ -24,9 +24,9 @@
     "react-store"
   ],
   "peerDependencies": {
-      "prop-types": "15.x.x",
-      "react": ">= 16.3.1",
-      "react-dom": ">= 16.3.1"
+    "prop-types": "15.x.x",
+    "react": ">= 16.3.1",
+    "react-dom": ">= 16.3.1"
   },
   "devDependencies": {
     "babel-eslint": "^8.2.2",
