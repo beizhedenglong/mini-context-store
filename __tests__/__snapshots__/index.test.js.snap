@@ -1,0 +1,29 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`createStore actions 1`] = `
+Array [
+  "hello, world!",
+  <div>
+    1
+    <button
+      onClick={[Function]}
+    >
+      +1
+    </button>
+  </div>,
+]
+`;
+
+exports[`createStore renders correctly 1`] = `
+Array [
+  "hello, world!",
+  <div>
+    0
+    <button
+      onClick={[Function]}
+    >
+      +1
+    </button>
+  </div>,
+]
+`;

@@ -1,8 +1,11 @@
 {
-  "name": "reactablejs",
-  "version": "0.0.3",
+  "name": "mini-context-store",
+  "version": "0.0.1",
   "main": "lib/index.js",
-  "repository": "https://github.com/beizhedenglong/reactablejs.git",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/beizhedenglong/mini-context-store"
+  },
   "author": "Victor Wang(wang shaojie) <wang_shaojie@icloud.com>",
   "license": "MIT",
   "private": false,
@@ -16,10 +19,9 @@
   },
   "keywords": [
     "react",
-    "reactable",
-    "interact",
-    "drag",
-    "resize"
+    "redux",
+    "state-management",
+    "react-store"
   ],
   "devDependencies": {
     "babel-eslint": "^8.2.2",
