@@ -29,7 +29,7 @@
 ```
 
 ## Examples
-  More examples click [here](https://github.com/beizhedenglong/reactablejs/tree/master/examples)
+  More examples click [here](https://github.com/beizhedenglong/mini-context-store/tree/master/examples)
 ## API
 ### createStore
 ```js
