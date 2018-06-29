@@ -7,7 +7,7 @@ const createProvider = (Provider, initialState, handlers) => {
     state = initialState || {}
     handlers = Object.keys(handlers).reduce((fns, fnName) => {
       fns[fnName] = (...args) => { // eslint-disable-line
-        handlers[fnName](...args)(this.setState.bind(this))
+        handlers[fnName](...args)(this.setState.bind(this), this.state)
       }
       return fns
     }, {})
