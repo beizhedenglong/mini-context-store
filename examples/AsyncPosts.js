@@ -9,14 +9,14 @@ const { Provider, connect } = creteStore(
     posts: [],
   },
   {
-    onChange: subreddit => async () => {
+    onChange: subreddit => async (dispatch) => {
       if (subreddit === '') return { posts: [], loading: false }
       const response = await fetch(`https://www.reddit.com/r/${subreddit}.json`)
       const json = await response.json()
       const posts = json.data.children.map(child => child.data)
-      return { posts, loading: false }
+      return dispatch({ posts, loading: false })
     },
-    setLoading: loading => () => ({ loading }),
+    setLoading: loading => dispatch => dispatch({ loading }),
   },
 )
 
@@ -38,15 +38,13 @@ let Picker = ({ value, onChange, options }) => (
   </span>
 )
 
-Picker = connect(
-  ({ selectedSubreddit }) => ({ value: selectedSubreddit }),
-  ({ onChange, setLoading }) => ({
-    onChange: (value) => {
-      setLoading(true)
-      onChange(value)
-    },
-  }),
-)(Picker)
+Picker = connect(({ selectedSubreddit }, { onChange, setLoading }) => ({
+  value: selectedSubreddit,
+  onChange: (value) => {
+    setLoading(true)
+    onChange(value)
+  },
+}))(Picker)
 
 let Posts = ({ posts }) => (
   <ul>

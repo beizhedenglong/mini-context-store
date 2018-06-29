@@ -1,6 +1,6 @@
 # Mini Context Store
 A react state management library using new context api. <br />
-中文介绍，点击[这里](https://github.com/beizhedenglong/mini-context-store/blob/master/README-CN.md)
+
 ## Installation
 `npm i mini-context-store --save`
 
@@ -12,11 +12,10 @@ A react state management library using new context api. <br />
   const { Provider, connect } = createStore(
     { counter: 0 },
     {
-      onAdd: () => ({ counter }) => ({ counter: counter + 1 }),
-      onSubtract: () => ({ counter }) => ({ counter: counter - 1 }),
+      onAdd: () => dispatch => dispatch(({ counter }) => ({ counter: counter + 1 })),
+      onSubtract: () => dispatch => dispatch(({ counter }) => ({ counter: counter - 1 })),
     },
   )
-  const identity = x => x
   let Counter = ({ counter, onAdd, onSubtract }) => (
     <Fragment>
       <span>{counter}</span>
@@ -24,7 +23,7 @@ A react state management library using new context api. <br />
       <button onClick={onSubtract}>-1</button>
     </Fragment>
   )
-  Counter = connect(identity, identity)(Counter)
+  Counter = connect((state, handlers) => ({...state, ...handlers}))(Counter)
 
   const App = () => <Provider><Counter /></Provider>
 ```
@@ -34,7 +33,7 @@ A react state management library using new context api. <br />
 ## API
 ### createStore
 ```js
-  const {Provider, Consumer, connect} = createStore(initialState, actions)
+  const {Provider, Consumer, connect} = createStore(initialState, handlers)
 ```
 ### Provider
 ```js
@@ -48,17 +47,17 @@ A react component allows Consumers or `connected` component to subscribe the sta
 ### Consumer
 ```js
   <Consumer>
-    {(state, actions) => /* use state and actions here */}
+    {(state, handlers) => /* use state and handlers here */}
   </Consumer>
 ```
 A react component subscribes state changes. 
 
 ### connect
 ```js
-  const EnchancedComponent = connect(mapStateToProps, mapStateToProps)(BaseComponent)
+  const EnchancedComponent = connect(mapStoreToProps)(BaseComponent)
 ```
-connect is a function  receives two map functions and return  a high-order component. The  high-order component receives a BaseComponent, then  return a EnchancedComponent that subscribes state changes. <br />
-mapStateToProps and mapStateToProps are two pure functions. mapStateToProps receives state and return an object that will be merged in EnchancedComponent' props. mapStateToProps receives actions and and return an object that will be merged in EnchancedComponent' props.
+connect is a function  receives a map functions and return  a high-order component. The  high-order component receives a BaseComponent, then  return a EnchancedComponent that subscribes state changes. <br />
+mapStoreToProps receives state and handlers,  return an object that will be merged in EnchancedComponent' props. 
 
 
 ## Reference

@@ -13,19 +13,19 @@ const TodoStore = createStore(
     text: '',
   },
   {
-    addTodo: () => ({ todos, text }) => {
+    addTodo: () => dispatch => dispatch(({ todos, text }) => {
       if (text.trim() === '') {
         return {}
       }
       return { todos: [...todos, { id: id++, text, completed: false }] }
-    },
-    onTextChange: value => () => ({ text: value }),
-    toggleTodo: id => ({ todos }) => ({
+    }),
+    onTextChange: value => dispatch => dispatch({ text: value }),
+    toggleTodo: id => dispatch => dispatch(({ todos }) => ({
       todos: todos.map(todo =>
         (todo.id === id
           ? { ...todo, completed: !todo.completed }
           : todo)),
-    }),
+    })),
   },
 )
 
@@ -55,13 +55,12 @@ const TodoComponent = (props) => {
   )
 }
 
-const Todo = TodoStore.connect(
-  state => ({ text: state.text, todos: state.todos }),
-  actions => ({
-    ...actions,
-    onTextChange: e => actions.onTextChange(e.target.value),
-  }),
-)(TodoComponent)
+const Todo = TodoStore.connect((state, handlers) => ({
+  text: state.text,
+  todos: state.todos,
+  ...handlers,
+  onTextChange: e => handlers.onTextChange(e.target.value),
+}))(TodoComponent)
 
 
 const TodoApp = () => (
