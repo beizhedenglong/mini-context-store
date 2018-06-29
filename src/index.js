@@ -2,26 +2,19 @@ import React, { createContext } from 'react'
 import PropTypes from 'prop-types'
 import { getDisplayName } from './utils'
 
-const createProvider = (Provider, initialState, actions) => {
+const createProvider = (Provider, initialState, handlers) => {
   class EnchancedProvider extends React.Component {
     state = initialState || {}
-    actions = Object.keys(actions).reduce((fns, fnName) => {
+    handlers = Object.keys(handlers).reduce((fns, fnName) => {
       fns[fnName] = (...args) => { // eslint-disable-line
-        const outerResult = actions[fnName](...args)
-        const innerResult = outerResult(this.state)
-
-        if (innerResult.then) {
-          innerResult.then(res => this.setState(res))
-        } else {
-          this.setState(state => outerResult(state))
-        }
+        handlers[fnName](...args)(this.setState.bind(this))
       }
       return fns
     }, {})
     render() {
       return (
         <Provider
-          value={{ state: this.state, actions: this.actions }}
+          value={{ state: this.state, handlers: this.handlers }}
           {...this.props}
         />
       )
@@ -31,15 +24,14 @@ const createProvider = (Provider, initialState, actions) => {
 }
 
 
-const empty = () => ({})
 const createConnect = Consumer =>
-  (mapStateToProps = empty, mapActionsToProps = empty) =>
+  (mapStoreToProps = () => ({})) =>
     (BaseComponent) => {
       const Connect = props => (
         <Consumer>
           {
-          ({ state, actions }) =>
-            <BaseComponent {...props} {...mapStateToProps(state)} {...mapActionsToProps(actions)} />
+          ({ state, handlers }) =>
+            <BaseComponent {...props} {...mapStoreToProps(state, handlers)} />
           }
         </Consumer>
       )
@@ -51,7 +43,7 @@ const creatConsumer = (Consumer) => {
   const EnchancedConsumer = props =>
     (
       <Consumer>
-        {({ state, actions }) => props.children(state, actions) }
+        {({ state, handlers }) => props.children(state, handlers) }
       </Consumer>
     )
 
@@ -62,9 +54,9 @@ const creatConsumer = (Consumer) => {
   return EnchancedConsumer
 }
 
-const createStore = (state, actions) => {
+const createStore = (state, handlers) => {
   const context = createContext()
-  const Provider = createProvider(context.Provider, state, actions)
+  const Provider = createProvider(context.Provider, state, handlers)
   const Consumer = creatConsumer(context.Consumer)
   const connect = createConnect(context.Consumer)
 
