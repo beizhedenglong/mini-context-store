@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`createStore actions 1`] = `
+exports[`createStore handlers 1`] = `
 Array [
   "hello, world!",
   <div>
