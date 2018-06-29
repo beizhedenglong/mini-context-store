@@ -14,7 +14,7 @@
     "demo": "parcel build ./examples/index.html -d docs --public-url ./",
     "lint": "eslint ./src/**/**.js",
     "build": "rimraf lib && babel src --out-dir lib",
-    "publish": "npm run build && npm publish",
+    "release": "npm run build && npm publish",
     "test": "jest"
   },
   "keywords": [
