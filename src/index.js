@@ -6,9 +6,8 @@ const createProvider = (Provider, initialState, handlers) => {
   class EnchancedProvider extends React.Component {
     state = initialState || {}
     handlers = Object.keys(handlers).reduce((fns, fnName) => {
-      fns[fnName] = (...args) => { // eslint-disable-line
+      fns[fnName] = (...args) =>  // eslint-disable-line
         handlers[fnName](...args)(this.setState.bind(this), this.state)
-      }
       return fns
     }, {})
     render() {
